@@ -13,14 +13,26 @@ const User = dbProvider.define<IUserInstace>('user', {
   },
   email: {
     type: DataTypes.STRING,
-    unique: true
+    unique: true,
+    allowNull: false
+  },
+  isEmailActivated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  activationEmailLink: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
   password: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    allowNull: false
   },
   role: {
     type: DataTypes.STRING,
-    defaultValue: EUserRoles.USER
+    defaultValue: EUserRoles.USER,
+    allowNull: false
   }
 });
 
