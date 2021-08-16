@@ -1,4 +1,4 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import config from "../configuration/config";
 import RefreshToken from "../domain/entities/RefreshToken";
 import { IUserDTO } from "../domain/dto/IUserDTO";
@@ -40,6 +40,22 @@ class TokenService {
     const tokenData = await RefreshToken.destroy({ where: { token: refreshToken } });
 
     return (tokenData);
+  };
+
+  async findToken(refreshToken: string) {
+    const tokenData = await RefreshToken.findOne({ where: { token: refreshToken } });
+
+    return (tokenData);
+  };
+
+  validateToken(secretKey: string, token: string) {
+    try {
+      const userData = verify(token, secretKey) as IUserDTO;
+
+      return (userData);
+    } catch (_) {
+      return (null);
+    }
   };
 };
 

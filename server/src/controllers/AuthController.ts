@@ -44,6 +44,17 @@ class AuthController {
     }
   };
 
+  async activate(req: IActivationRequest, res: Response, next: NextFunction) {
+    try {
+      const activationLink = req.params.link;
+
+      await AuthService.activate(activationLink);
+      res.redirect(config.CLIENT_URL);
+    } catch (e) {
+      next(e);
+    }
+  };
+
   async login(req: IAuthRequest, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
@@ -71,20 +82,16 @@ class AuthController {
     }
   };
 
-  async activate(req: IActivationRequest, res: Response, next: NextFunction) {
+  async refresh(req: ICookieRequest, res: Response, next: NextFunction) {
     try {
-      const activationLink = req.params.link;
+      const { refreshToken } = req.cookies;
+      const userData = await AuthService.refresh(refreshToken);
 
-      await AuthService.activate(activationLink);
-      res.redirect(config.CLIENT_URL);
-    } catch (e) {
-      next(e);
-    }
-  };
-
-  async refresh(req: Request, res: Response, next: NextFunction) {
-    try {
-
+      res.cookie(ECookie.REFRESH_TOKEN, userData.refreshToken, {
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+      });
+      return (res.json(userData));
     } catch (e) {
       next(e);
     }

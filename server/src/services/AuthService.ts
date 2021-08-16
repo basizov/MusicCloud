@@ -29,6 +29,16 @@ class AuthService {
     return (await this.createAndSaveTokens(user));
   };
 
+  async activate(activationEmailLink: string) {
+    const user = await User.findOne({ where: { activationEmailLink } });
+
+    if (!user) {
+      throw ApplicationError.badRequest('Неккоректная ссылка активации!');
+    }
+    user.set('isEmailActivated', true);
+    await user.save();
+  };
+
   async login(email: string, password: string) {
     const user = await User.findOne({ where: { email } });
 
@@ -43,21 +53,29 @@ class AuthService {
     return (await this.createAndSaveTokens(user));
   };
 
-  async activate(activationEmailLink: string) {
-    const user = await User.findOne({ where: { activationEmailLink } });
-
-    if (!user) {
-      throw ApplicationError.badRequest('Неккоректная ссылка активации!');
-    }
-    user.set('isEmailActivated', true);
-    await user.save();
-  };
-
   async logout(refreshToken: string) {
     const token = await TokenService.removeToken(refreshToken);
 
     return token;
-  }
+  };
+
+  async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw ApplicationError.notAuthorized('Пользователь не авторизован, отсутствует refersh token!');
+    }
+    const token = TokenService.validateToken(config.REFRESH_SECRET_KEY, refreshToken);
+    const tokenFromDb = await TokenService.findToken(refreshToken);
+
+    if (!token || !tokenFromDb) {
+      throw ApplicationError.notAuthorized('Пользователь не авторизован, не валидный refersh token!');
+    }
+    const user = await User.findOne({ where: { id: token.id } });
+
+    if (user) {
+      return this.createAndSaveTokens(user);
+    }
+    throw ApplicationError.badRequest('Оишбка получения пользователя!');
+  };
 
   private async createAndSaveTokens(user: IUserInstace) {
     const userDto: IUserDTO = {
@@ -69,7 +87,7 @@ class AuthService {
 
     await TokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
-  }
+  };
 };
 
 export default new AuthService();
