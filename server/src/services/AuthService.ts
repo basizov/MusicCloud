@@ -53,6 +53,12 @@ class AuthService {
     await user.save();
   };
 
+  async logout(refreshToken: string) {
+    const token = await TokenService.removeToken(refreshToken);
+
+    return token;
+  }
+
   private async createAndSaveTokens(user: IUserInstace) {
     const userDto: IUserDTO = {
       id: user.getDataValue('id'),

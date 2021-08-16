@@ -3,6 +3,14 @@ import AuthService from "../services/AuthService";
 import { ParamsDictionary } from 'express-serve-static-core';
 import config from "../configuration/config";
 
+export enum ECookie {
+  REFRESH_TOKEN = 'refreshToken'
+};
+
+interface ICookieRequest extends Request {
+  cookies: IActivationParams;
+};
+
 interface IAuthRequest extends Request {
   body: IAuthBody;
 };
@@ -26,7 +34,7 @@ class AuthController {
       const { email, password } = req.body;
       const userData = await AuthService.register(email, password);
 
-      res.cookie('refreshToken', userData.refreshToken, {
+      res.cookie(ECookie.REFRESH_TOKEN, userData.refreshToken, {
         maxAge: 15 * 24 * 60 * 60 * 1000,
         httpOnly: true
       });
@@ -41,7 +49,7 @@ class AuthController {
       const { email, password } = req.body;
       const userData = await AuthService.login(email, password);
 
-      res.cookie('refreshToken', userData.refreshToken, {
+      res.cookie(ECookie.REFRESH_TOKEN, userData.refreshToken, {
         maxAge: 15 * 24 * 60 * 60 * 1000,
         httpOnly: true
       });
@@ -51,9 +59,13 @@ class AuthController {
     }
   };
 
-  async logout(req: Request, res: Response, next: NextFunction) {
+  async logout(req: ICookieRequest, res: Response, next: NextFunction) {
     try {
+      const { refreshToken } = req.cookies;
+      const token = await AuthService.logout(refreshToken);
 
+      res.clearCookie(ECookie.REFRESH_TOKEN);
+      return (res.json(token));
     } catch (e) {
       next(e);
     }
