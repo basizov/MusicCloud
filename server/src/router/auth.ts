@@ -3,7 +3,7 @@ import AuthController from "../controllers/AuthController";
 
 const authRouter: Router = Router();
 
-enum EAuthRoutes {
+export enum EAuthRoutes {
   REGISTER = '/register',
   LOGIN = '/login',
   LOGOUT = '/logout',

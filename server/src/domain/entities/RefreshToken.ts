@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize/types";
+import { DataTypes } from "sequelize";
 import dbProvider from "../../dbProvider";
 import { IRefreshTokenInstace } from "../interfaces/IRefreshToken";
 
@@ -15,7 +15,7 @@ const RefreshToken = dbProvider.define<IRefreshTokenInstace>('RefreshToken', {
     allowNull: false
   },
   token: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   }
 });

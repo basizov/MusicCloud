@@ -1,13 +1,39 @@
 import { NextFunction, Request, Response } from "express";
+import ApplicationError from "../domain/entities/ApplicationError";
+import AuthService from "../services/AuthService";
+import { ParamsDictionary } from 'express-serve-static-core';
+import config from "../configuration/config";
+
+interface IRegisterRequest extends Request {
+  body: IRegisterBody;
+};
+
+interface IRegisterBody {
+  email: string;
+  password: string;
+};
+
+interface IActivationRequest extends Request<IActivationParams> {
+  body: IRegisterBody;
+};
+
+interface IActivationParams extends ParamsDictionary {
+  link: string;
+}
 
 class AuthController {
-  async register(req: Request, res: Response, next: NextFunction) {
+  async register(req: IRegisterRequest, res: Response, next: NextFunction) {
     try {
+      const { email, password } = req.body;
+      const userData = await AuthService.register(email, password);
 
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+      });
+      return (res.json(userData));
     } catch (e) {
-      const error = e as Error;
-
-      next(error);
+      next(e);
     }
   };
 
@@ -15,9 +41,7 @@ class AuthController {
     try {
 
     } catch (e) {
-      const error = e as Error;
-
-      next(error);
+      next(e);
     }
   };
 
@@ -25,19 +49,18 @@ class AuthController {
     try {
 
     } catch (e) {
-      const error = e as Error;
-
-      next(error);
+      next(e);
     }
   };
 
-  async activate(req: Request, res: Response, next: NextFunction) {
+  async activate(req: IActivationRequest, res: Response, next: NextFunction) {
     try {
+      const activationLink = req.params.link;
 
+      await AuthService.activate(activationLink);
+      res.redirect(config.CLIENT_URL);
     } catch (e) {
-      const error = e as Error;
-
-      next(error);
+      next(e);
     }
   };
 
@@ -45,9 +68,7 @@ class AuthController {
     try {
 
     } catch (e) {
-      const error = e as Error;
-
-      next(error);
+      next(e);
     }
   };
 };

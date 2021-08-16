@@ -3,7 +3,7 @@ import dbProvider from "../../dbProvider";
 import { EUserRoles } from "../enums/EUserRoles";
 import { IUserInstace } from "../interfaces/IUser";
 
-const User = dbProvider.define<IUserInstace>('user', {
+const User = dbProvider.define<IUserInstace>('User', {
   id: {
     allowNull: false,
     autoIncrement: false,
@@ -18,8 +18,7 @@ const User = dbProvider.define<IUserInstace>('user', {
   },
   isEmailActivated: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false
+    defaultValue: false
   },
   activationEmailLink: {
     type: DataTypes.STRING,
@@ -31,8 +30,7 @@ const User = dbProvider.define<IUserInstace>('user', {
   },
   role: {
     type: DataTypes.STRING,
-    defaultValue: EUserRoles.USER,
-    allowNull: false
+    defaultValue: EUserRoles.USER
   }
 });
 
