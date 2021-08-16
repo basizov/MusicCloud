@@ -1,20 +1,19 @@
 import { NextFunction, Request, Response } from "express";
-import ApplicationError from "../domain/entities/ApplicationError";
 import AuthService from "../services/AuthService";
 import { ParamsDictionary } from 'express-serve-static-core';
 import config from "../configuration/config";
 
-interface IRegisterRequest extends Request {
-  body: IRegisterBody;
+interface IAuthRequest extends Request {
+  body: IAuthBody;
 };
 
-interface IRegisterBody {
+interface IAuthBody {
   email: string;
   password: string;
 };
 
 interface IActivationRequest extends Request<IActivationParams> {
-  body: IRegisterBody;
+  body: IAuthBody;
 };
 
 interface IActivationParams extends ParamsDictionary {
@@ -22,7 +21,7 @@ interface IActivationParams extends ParamsDictionary {
 }
 
 class AuthController {
-  async register(req: IRegisterRequest, res: Response, next: NextFunction) {
+  async register(req: IAuthRequest, res: Response, next: NextFunction) {
     try {
       const { email, password } = req.body;
       const userData = await AuthService.register(email, password);
@@ -37,9 +36,16 @@ class AuthController {
     }
   };
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async login(req: IAuthRequest, res: Response, next: NextFunction) {
     try {
+      const { email, password } = req.body;
+      const userData = await AuthService.login(email, password);
 
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 15 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+      });
+      return (res.json(userData));
     } catch (e) {
       next(e);
     }
