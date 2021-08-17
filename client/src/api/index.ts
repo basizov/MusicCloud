@@ -9,7 +9,7 @@ enum ERoutes {
   REFRESH = '/auth/refresh'
 };
 
-const responseBody = (response: AxiosResponse) => response.data;
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
   get: <T>(url: string, urlParams?: URLSearchParams) => axios.get<T>(url, { params: urlParams }).then(responseBody),
@@ -23,6 +23,8 @@ const Auth = {
   refresh: () => requests.get<IUserResponse>(ERoutes.REFRESH)
 };
 
-export default {
+const api = {
   Auth
 };
+
+export default api;

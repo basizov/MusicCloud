@@ -1,7 +1,9 @@
 import React, { ChangeEvent } from 'react';
 import { FormEvent } from 'react';
 import { useState } from 'react';
+import { useTypedThunkDispatch } from '../../hooks/useTypedDispatch';
 import { IAuthUser } from '../../models/IUser';
+import { loginAsyncHandler } from '../../store/authStore/asyncActions';
 import BaseButton from '../uiComponents/BaseButton/BaseButton';
 import BaseInput from '../uiComponents/BaseInput/BaseInput';
 
@@ -11,12 +13,13 @@ const initialState: IAuthUser = {
 };
 
 const LoginForm: React.FC = () => {
+  const dispatch = useTypedThunkDispatch();
   const [authCredentials, setAuthCredentials] = useState<IAuthUser>(initialState);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log({ ...authCredentials });
+    dispatch(loginAsyncHandler(authCredentials));
     setAuthCredentials(initialState);
   };
 

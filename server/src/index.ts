@@ -12,7 +12,10 @@ const PORT = config.PORT;
 const BASE_ROUTE = config.BASE_ROUTE;
 const application = express();
 
-application.use(cors());
+application.use(cors({
+  credentials: true,
+  origin: config.CLIENT_URL
+}));
 application.use(cookieParser());
 application.use(json());
 application.use(loggerMiddleware);

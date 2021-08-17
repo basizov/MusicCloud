@@ -4,6 +4,12 @@ export interface IUser {
   isEmailActivated: boolean;
 };
 
+export interface IUser {
+  id: string;
+  email: string;
+  isEmailActivated: boolean;
+};
+
 export interface IUserResponse {
   user: IUser;
   accessToken: string;
