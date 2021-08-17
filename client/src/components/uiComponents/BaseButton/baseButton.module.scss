@@ -1,0 +1,17 @@
+.button {
+  cursor: pointer;
+  outline: none;
+  padding: .3em;
+  background-color: transparent;
+  border: .1rem solid var(--classic);
+  border-radius: .3em;
+  min-width: 10ch;
+  transition: background-color 250ms linear, border-bottom-color 250ms linear;
+  &:hover {
+    background-color: var(--classic-07);
+  }
+  &:active,
+  &:focus {
+    background-color: var(--classic-08);
+  }
+}

@@ -1,0 +1,62 @@
+$primary: hsl(0, 0%, 13%);
+$primary-07: hsla(0, 0%, 13%, .7);
+$primary-09: hsla(0, 0%, 13%, .9);
+
+$secondary: hsl(0, 0%, 7%);
+$secondary-07: hsla(0, 0%, 7%, .7);
+
+$success: hsl(118, 72%, 17%);
+$failure: hsl(0, 72%, 17%);
+$warning: hsl(39, 87%, 50%);
+$ground: hsl(0, 0%, 9%);
+
+$classic: hsl(209, 75%, 24%);
+$classic-07: hsla(209, 75%, 24%, 0.7);
+$classic-08: hsla(209, 75%, 24%, 0.8);
+
+$black: hsl(0, 0%, 0%);
+$black-03: hsla(0, 0%, 0%, 0.3);
+$black-07: hsla(0, 0%, 0%, 0.7);
+
+
+$white: hsl(0, 0%, 100%);
+$white-03: hsla(0, 0%, 100%, 0.3);
+$white-07: hsla(0, 0%, 100%, 0.7);
+$white-08: hsla(0, 0%, 100%, 0.8);
+
+:root {
+  --primary: #{$primary};
+  --primary-07: #{$primary-07};
+  --primary-09: #{$primary-09};
+
+  --secondary: #{$secondary};
+  --secondary-07: #{$secondary-07};
+
+  --success: #{$success};
+  --failure: #{$failure};
+  --warning: #{$warning};
+  --ground: #{$ground};
+  
+  --classic: #{$classic};
+  --classic-07: #{$classic-07};
+  --classic-08: #{$classic-08};
+
+  --black: #{$black};
+  --black-03: #{$black-03};
+  --black-07: #{$black-07};
+
+
+  --white: #{$white};
+  --white-03: #{$white-03};
+  --white-07: #{$white-07};
+  --white-08: #{$white-08};
+  
+  // --primary: rgb(122, 122, 122);
+  // --secondary: rgb(185, 185, 185);
+  // --ground: rgb(71, 71, 71);
+}
+
+::selection {
+  color: hsl(0, 58%, 75%);
+}
+
