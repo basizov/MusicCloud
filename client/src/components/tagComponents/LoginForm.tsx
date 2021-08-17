@@ -16,10 +16,10 @@ const LoginForm: React.FC = () => {
   const dispatch = useTypedThunkDispatch();
   const [authCredentials, setAuthCredentials] = useState<IAuthUser>(initialState);
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(loginAsyncHandler(authCredentials));
+    await dispatch(loginAsyncHandler(authCredentials));
     setAuthCredentials(initialState);
   };
 

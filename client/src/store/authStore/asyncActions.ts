@@ -20,3 +20,17 @@ export const loginAsyncHandler = (
     }
   }
 };
+
+export const authAsyncHandler = (): AuthThunkType => {
+  return async (dispatch) => {
+    try {
+      const user = await api.Auth.refresh();
+
+      console.log(user);
+      localStorage.setItem('accessToken', user.accessToken);
+      dispatch(setUser(user.user));
+    } catch (e) {
+      console.error(e as Error);
+    }
+  }
+};

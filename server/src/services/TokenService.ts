@@ -7,7 +7,7 @@ import { v4 } from "uuid";
 class TokenService {
   generateTokens(payload: IUserDTO) {
     const accessToken = sign(payload, config.ACCESS_SECRET_KEY, {
-      expiresIn: '15m'
+      expiresIn: '15s'
     });
     const refreshToken = sign(payload, config.REFRESH_SECRET_KEY, {
       expiresIn: '15d'
