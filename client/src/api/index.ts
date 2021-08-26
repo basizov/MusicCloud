@@ -9,7 +9,7 @@ enum ERoutes {
   REFRESH = '/auth/refresh'
 };
 
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
+const responseBody = <T>(response?: AxiosResponse<T>) => response?.data;
 
 const requests = {
   get: <T>(url: string, urlParams?: URLSearchParams) => axios.get<T>(url, { params: urlParams }).then(responseBody),

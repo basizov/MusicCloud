@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import LoginForm from '../components/tagComponents/LoginForm';
+import { LoginFormik } from '../components/tagComponents/LoginFormik';
+import { BaseButton } from '../components/uiComponents/BaseButton/BaseButton';
 import { useTypedThunkDispatch } from '../hooks/useTypedDispatch';
 import useTypedSelector from '../hooks/useTypedSelector';
-import { authAsyncHandler } from '../store/authStore/asyncActions';
+import { authAsyncHandler, logoutAsyncHandler } from '../store/authStore/asyncActions';
 
-const App: React.FC = () => {
-  const auth = useTypedSelector(s => s.auth);
+export const App: React.FC = () => {
+  const isAuth = useTypedSelector(s => s.auth.isAuth);
   const dispatch = useTypedThunkDispatch();
 
   useEffect(() => {
@@ -16,9 +17,11 @@ const App: React.FC = () => {
 
   return (
     <main className="container">
-      <LoginForm />
+      {isAuth ?
+        <BaseButton onClick={() => dispatch(logoutAsyncHandler())}>
+          Выйти
+        </BaseButton>
+        : <LoginFormik />}
     </main>
   );
 };
-
-export default App;

@@ -1,7 +1,7 @@
 import { ThunkAction } from "redux-thunk";
 import api from "../../api";
 import { IAuthUser, IUser } from "../../models/IUser";
-import AuthActionsType, { setUser } from "./action";
+import { AuthActionsType, logout, LogoutType, setUser } from "./action";
 
 type AuthThunkType = ThunkAction<Promise<void>, IUser | null, unknown, AuthActionsType>;
 
@@ -12,9 +12,23 @@ export const loginAsyncHandler = (
     try {
       const user = await api.Auth.login(credentials);
 
-      console.log(user);
-      localStorage.setItem('accessToken', user.accessToken);
-      dispatch(setUser(user.user));
+      if (user) {
+        console.log(user);
+        localStorage.setItem('accessToken', user.accessToken);
+        dispatch(setUser(user.user));
+      }
+    } catch (e) {
+      console.error(e as Error);
+    }
+  }
+};
+
+export const logoutAsyncHandler = (): AuthThunkType => {
+  return async (dispatch) => {
+    try {
+      await api.Auth.logout();
+      localStorage.removeItem('accessToken');
+      dispatch(logout());
     } catch (e) {
       console.error(e as Error);
     }
@@ -26,9 +40,11 @@ export const authAsyncHandler = (): AuthThunkType => {
     try {
       const user = await api.Auth.refresh();
 
-      console.log(user);
-      localStorage.setItem('accessToken', user.accessToken);
-      dispatch(setUser(user.user));
+      if (user) {
+        console.log(user);
+        localStorage.setItem('accessToken', user.accessToken);
+        dispatch(setUser(user.user));
+      }
     } catch (e) {
       console.error(e as Error);
     }

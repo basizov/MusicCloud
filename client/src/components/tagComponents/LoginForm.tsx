@@ -4,15 +4,15 @@ import { useState } from 'react';
 import { useTypedThunkDispatch } from '../../hooks/useTypedDispatch';
 import { IAuthUser } from '../../models/IUser';
 import { loginAsyncHandler } from '../../store/authStore/asyncActions';
-import BaseButton from '../uiComponents/BaseButton/BaseButton';
-import BaseInput from '../uiComponents/BaseInput/BaseInput';
+import { BaseButton } from '../uiComponents/BaseButton/BaseButton';
+import { BaseInput } from '../uiComponents/BaseInput/BaseInput';
 
 const initialState: IAuthUser = {
   email: '',
   password: ''
 };
 
-const LoginForm: React.FC = () => {
+export const LoginForm: React.FC = () => {
   const dispatch = useTypedThunkDispatch();
   const [authCredentials, setAuthCredentials] = useState<IAuthUser>(initialState);
 
@@ -50,6 +50,3 @@ const LoginForm: React.FC = () => {
     </section>
   );
 };
-
-export default LoginForm;
-

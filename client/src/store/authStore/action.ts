@@ -1,16 +1,18 @@
 import { IUser } from "../../models/IUser";
 
 export enum EAuthActions {
-  LOGIN = 'LOGIN'
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT'
 };
 
-export interface ILogin {
+export const setUser = (payload: IUser | null): LoginType => ({ type: EAuthActions.LOGIN, payload });
+export const logout = (): LogoutType => ({ type: EAuthActions.LOGOUT });
+
+export type LoginType = {
   type: EAuthActions.LOGIN,
-  payload: IUser
+  payload: IUser | null
 };
-
-type AuthActionsType = ILogin;
-
-export const setUser = (payload: IUser) => ({ type: EAuthActions.LOGIN, payload });
-
-export default AuthActionsType;
+export type LogoutType = {
+  type: EAuthActions.LOGOUT
+};
+export type AuthActionsType = LoginType | LogoutType;

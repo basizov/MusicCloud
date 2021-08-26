@@ -25,7 +25,9 @@ const responseErrors = async (e: AxiosError) => {
       originalRequest._isRetry = true;
       const user = await api.Auth.refresh();
 
-      localStorage.setItem('accessToken', user.accessToken);
+      if (user) {
+        localStorage.setItem('accessToken', user.accessToken);
+      }
       return (axios.request(originalRequest));
     } catch (e) {
       console.error(e);
