@@ -15,19 +15,7 @@ html {
   font-size: 62.5%;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  max-width: 114rem;
-  transform: translateX(-50%);
-}
-
-#root {
+body {
   position: relative;
   width: 100%;
   min-height: 100vh;
@@ -35,7 +23,7 @@ html {
   scroll-behavior: smooth;
   color: var(--white);
   background-color: var(--ground);
-  font-size: 1.4rem;
+  font-size: 1.4rem !important;
 }
 
 @import '../styles/root';

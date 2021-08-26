@@ -1,7 +1,7 @@
 import { ThunkAction } from "redux-thunk";
 import api from "../../api";
 import { IAuthUser, IUser } from "../../models/IUser";
-import { AuthActionsType, logout, LogoutType, setUser } from "./action";
+import { AuthActionsType, logout, setUser } from "./action";
 
 type AuthThunkType = ThunkAction<Promise<void>, IUser | null, unknown, AuthActionsType>;
 

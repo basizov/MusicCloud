@@ -1,11 +1,10 @@
+import { Button, TextField } from '@material-ui/core';
 import React, { ChangeEvent } from 'react';
 import { FormEvent } from 'react';
 import { useState } from 'react';
 import { useTypedThunkDispatch } from '../../hooks/useTypedDispatch';
 import { IAuthUser } from '../../models/IUser';
 import { loginAsyncHandler } from '../../store/authStore/asyncActions';
-import { BaseButton } from '../uiComponents/BaseButton/BaseButton';
-import { BaseInput } from '../uiComponents/BaseInput/BaseInput';
 
 const initialState: IAuthUser = {
   email: '',
@@ -32,20 +31,20 @@ export const LoginForm: React.FC = () => {
   return (
     <section className="login">
       <form className="login__form" onSubmit={submitHandler}>
-        <BaseInput
+        <TextField
           name='email'
           value={authCredentials.email}
           onChange={changeInputHandler}
           onFocus={e => e.target.select()}
           placeholder="Введите свой e-mail:" />
-        <BaseInput
+        <TextField
           type='password'
           name='password'
           value={authCredentials.password}
           onChange={changeInputHandler}
           onFocus={e => e.target.select()}
           placeholder="Введите свой пароль:" />
-        <BaseButton type='submit'>Войти</BaseButton>
+        <Button type='submit'>Войти</Button>
       </form>
     </section>
   );

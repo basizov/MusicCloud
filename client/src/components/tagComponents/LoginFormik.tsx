@@ -2,9 +2,9 @@ import React from 'react';
 import { IAuthUser } from '../../models/IUser';
 import { useTypedThunkDispatch } from '../../hooks/useTypedDispatch';
 import { loginAsyncHandler } from '../../store/authStore/asyncActions';
-import { BaseInput } from '../uiComponents/BaseInput/BaseInput';
 import { Formik } from 'formik';
-import { BaseButton } from '../uiComponents/BaseButton/BaseButton';
+import { Button, TextField } from '@material-ui/core';
+import { SchemaOf, object, string } from 'yup';
 
 const initialValues: IAuthUser = {
   email: '',
@@ -13,33 +13,46 @@ const initialValues: IAuthUser = {
 
 export const LoginFormik: React.FC = () => {
   const dispatch = useTypedThunkDispatch();
+  const validationSchema: SchemaOf<IAuthUser> = object({
+    email: string().email('Invalid email').required('Fill email field'),
+    password: string().required('Fill password field')
+  });
 
   return (
     <section className="login">
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={async (values, actions) => {
           await dispatch(loginAsyncHandler(values));
           actions.resetForm();
         }}
       >
-        {({ values, handleChange, handleSubmit }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, touched, errors, isValid, dirty }) => (
           <form className="login__form" onSubmit={handleSubmit}>
-            <BaseInput
+            <TextField
               type='email'
               name='email'
               value={values.email}
               onChange={handleChange}
+              onBlur={handleBlur}
               onFocus={e => e.target.select()}
-              placeholder="Введите свой e-mail:" />
-            <BaseInput
+              label="Введите свой e-mail:" />
+            {touched && touched.email && <h2>{errors.email}</h2>}
+            <TextField
               type='password'
               name='password'
               value={values.password}
               onChange={handleChange}
+              onBlur={handleBlur}
               onFocus={e => e.target.select()}
-              placeholder="Введите свой пароль:" />
-            <BaseButton type='submit'>Войти</BaseButton>
+              label="Введите свой пароль:" />
+            {touched && touched.password && <h2>{errors.password}</h2>}
+            <Button
+              disabled={!isValid && !dirty}
+              type='submit'>
+              Войти
+            </Button>
           </form>
         )}
       </Formik>
